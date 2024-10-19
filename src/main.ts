@@ -15,6 +15,8 @@ async function main(): Promise<void> {
     }
 
     spawnProcesses(config.spawn!, logger);
+
+    logger.info('exit');
   } catch (err) {
     if (err instanceof Error) {
       errorlog.error(err.message);
