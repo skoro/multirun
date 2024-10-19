@@ -18,7 +18,7 @@ function parseTimeout(value: string | number): number {
     throw new Error(`Timeout value must be string or number but got ${typeof value}.`);
   }
 
-  const tokens = value.trim().match('/^([0-9]+)[ ]*([smh]?)$/i');
+  const tokens = value.trim().match(/^([0-9]+)[ ]*([smh]?)$/i);
   if (! Array.isArray(tokens)) {
     throw new Error(`Invalid timeout value: ${value}`);
   }
@@ -27,7 +27,7 @@ function parseTimeout(value: string | number): number {
   const numint = parseInt(num);
 
   switch (unit.toLocaleLowerCase()) {
-    case 's':
+    case 's': case '':
       return secondsToMs(numint);
     case 'm':
       return minutesToMs(numint);
