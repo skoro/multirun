@@ -8,12 +8,16 @@ function createColorConsoleTransport() {
   });
 }
 
+function formatMessage(message: any) {
+  return typeof message === 'object' ? JSON.stringify(message) : message;
+}
+
 export function createLogger(debug: boolean, filename?: string): Logger {
   const level = debug ? 'debug' : 'info';
   const logTransports = [];
   const logFormat = format.combine(
     format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
-    format.printf(info => `[${info.timestamp}] ${info.level.toUpperCase()}: ${info.message}`)
+    format.printf(info => `[${info.timestamp}] ${info.level.toUpperCase()}: ${formatMessage(info.message)}`)
   );
 
   if (filename) {
@@ -35,6 +39,6 @@ export const errorlog = winstonCreateLogger({
     createColorConsoleTransport(),
   ],
   format: format.combine(
-    format.printf(info => `[${info.level.toUpperCase()}]: ${info.message}`)
+    format.printf(info => `[${info.level.toUpperCase()}]: ${formatMessage(info.message)}`)
   ),
 });
