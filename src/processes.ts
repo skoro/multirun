@@ -68,6 +68,10 @@ function getSpawnOptions(config: ProcessConfig): SpawnOptions {
     options.timeout = parseTimeout(config.timeout);
   }
 
+  if (config.cwd) {
+    options.cwd = config.cwd;
+  }
+
   return options;
 }
 
