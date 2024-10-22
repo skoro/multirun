@@ -1,7 +1,7 @@
 {
-  "name": "suv",
+  "name": "multirun",
   "version": "0.1.0",
-  "description": "Service process manager",
+  "description": "Simple task/process runner",
   "main": "build/main.js",
   "scripts": {
     "build": "tsc -p tsconfig.json",

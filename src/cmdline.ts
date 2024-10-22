@@ -10,7 +10,7 @@ program
 program
   .option('-d, --debug', 'output extra debugging messages', false)
   .option('-l, --log <file>', 'log messages to the specified file')
-  .option('-c, --config <file>', 'configuration file', path.join(__dirname, 'config.yml'));
+  .option('-c, --config <file>', 'configuration file', path.join(__dirname, 'multirun-config.yml'));
 
 program.parse(process.argv);
 
