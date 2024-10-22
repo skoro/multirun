@@ -9,6 +9,7 @@ export type ProcessConfig = {
   args?: string[],
   restart?: boolean,
   timeout?: TimeoutConfig,
+  output?: string,
 }
 
 export type ProcessEntries = {

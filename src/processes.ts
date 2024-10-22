@@ -2,6 +2,8 @@ import { ChildProcess, spawn, SpawnOptions } from "child_process";
 import { parseTimeout } from "./utils";
 import type { ProcessConfig, ProcessEntries as ProcessEntriesConfig } from "./config"
 import { Logger } from "winston";
+import fs from "node:fs";
+import { pipeline } from "stream/promises";
 
 type ProcessTable = {
   [name: string]: ProcessEntries;
@@ -53,6 +55,16 @@ function startProcess(procName: string, procConfig: ProcessConfig, logger: Logge
   });
 
   proc.on('close', (code: number) => closeOrRestartProcess(procName, code, proc.pid!, logger));
+
+  if (procConfig.output) {
+    setupProcessOutput(procConfig.output, proc);
+    if (!proc.stdout) {
+      logger.warn(`"${procName}" stdout is undefined`);
+    }
+    if (!proc.stderr) {
+      logger.warn(`"${procName}" stderr is undefined`)
+    }
+  }
 
   return proc;
 }
@@ -126,6 +138,22 @@ function closeOrRestartProcess(procName: string, code: number, pid: number, logg
   if (procEntry?.config.restart) {
     logger.info(`"${procName}" restart`);
     startProcess(procName, procEntry.config, logger);
+  }
+}
+
+function setupProcessOutput(file: string, proc: ChildProcess): void {
+  if (file === 'console') {
+    proc.stdout?.on('data', (data) => console.log(`${data}`));
+    proc.stderr?.on('data', (data) => console.error(`${data}`));
+    return;
+  }
+
+  const stream = fs.createWriteStream(file, { flags: 'a' });
+  if (proc.stdout) {
+    pipeline(proc.stdout!, stream);
+  }
+  if (proc.stderr) {
+    pipeline(proc.stderr!, stream);
   }
 }
 

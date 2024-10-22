@@ -1,12 +1,15 @@
 spawn:
   php 1:
-    command: 'c:\users\oleksii\.config\herd\bin\php85\php.exe'
+    command: 'c:\users\oleksii\.config\herd\bin\php84\php.exe'
     args: ['-S', 'localhost:8000']
-    restart: true
+    # restart: true
     timeout: 60s
+    output: console
 
   php 2:
     command: 'c:\users\\oleksii\.config\herd\bin\php83\php.exe'
     args: ['-S', 'localhost:8001']
-    restart: false
+    restart: true
     timeout: 60s
+    output: console
+    # output: test_output.log
