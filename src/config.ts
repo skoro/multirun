@@ -4,12 +4,13 @@ import YAML from 'yaml';
 type TimeoutConfig = string | number;
 
 export type ProcessConfig = {
-  cwd?: string,
-  command?: string,
-  args?: string[],
-  restart?: boolean,
-  timeout?: TimeoutConfig,
-  output?: string,
+  cwd?: string;
+  command?: string;
+  args?: string[];
+  restart?: boolean;
+  timeout?: TimeoutConfig;
+  output?: string;
+  max_failed_restarts?: number;
 }
 
 export type ProcessEntries = {

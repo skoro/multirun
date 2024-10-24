@@ -14,6 +14,8 @@ spawn:
     timeout: 10m
     # Restart command when timeout is over or command exited (default false).
     restart: true
+    # The maximum attempts to restart the failed process (by default, 3).
+    max_failed_restarts: 3
     # Redirect command stdout and stderr outputs to console or a file.
     # By default, no output is collected.
     output: console
