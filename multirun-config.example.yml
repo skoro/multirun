@@ -12,6 +12,8 @@ spawn:
     # Use a number or 's' suffix for secods, 'm' for minutes, 'h' for hours.
     # Valid values: 60, 60s, 30m, 4h
     timeout: 10m
+    # Do not start the process immediately and wait specified amount to time (by default, no delay).
+    start_delay: 5s
     # Restart command when timeout is over or command exited (default false).
     restart: true
     # The maximum attempts to restart the failed process (by default, 3).

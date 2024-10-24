@@ -11,6 +11,7 @@ export type ProcessConfig = {
   timeout?: TimeoutConfig;
   output?: string;
   max_failed_restarts?: number;
+  start_delay?: TimeoutConfig;
 }
 
 export type ProcessEntries = {

@@ -30,6 +30,16 @@ function spawnProcesses(processesConfig: ProcessEntriesConfig, logger: Logger): 
 
     processTable.push(procEntry);
 
+    startProcessTimeout(procEntry, logger);
+  }
+}
+
+function startProcessTimeout(procEntry: ProcessEntry, logger: Logger): void {
+  if (procEntry.config.start_delay) {
+    const msDelay = parseTimeout(procEntry.config.start_delay);
+    logger.debug(`"${procEntry.procName}" start delay: ${msDelay} ms`);
+    setTimeout(() => startProcess(procEntry, logger), msDelay);
+  } else {
     startProcess(procEntry, logger);
   }
 }
@@ -113,7 +123,7 @@ function closeOrRestartProcess(procEntry: ProcessEntry, code: number, logger: Lo
 
   if (shouldRestart) {
     logger.info(`"${procName}" restart attempt: ${procEntry.failedRestarts}`);
-    startProcess(procEntry, logger);
+    startProcessTimeout(procEntry, logger);
   }
 }
 
@@ -133,4 +143,4 @@ function setupProcessOutput(file: string, proc: ChildProcess): void {
   }
 }
 
-export { spawnProcesses, startProcess }
+export { spawnProcesses, startProcess, startProcessTimeout };
