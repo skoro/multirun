@@ -1,9 +1,9 @@
-import { ChildProcess, spawn, SpawnOptions } from "child_process";
+import { ChildProcess, spawn, SpawnOptions } from "node:child_process";
 import { parseTimeout } from "./utils";
 import type { ProcessConfig, ProcessEntries as ProcessEntriesConfig } from "./config"
 import { Logger } from "winston";
 import fs from "node:fs";
-import { pipeline } from "stream/promises";
+import { pipeline } from "node:stream/promises";
 
 type ProcessEntry = {
   procName: string;
