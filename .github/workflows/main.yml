@@ -17,4 +17,5 @@ jobs:
       - run: npm run compile
       - uses: actions/upload-artifact@v4
         with:
+          name: multirun-linux-x64
           path: dist/multirun-linux-x64
