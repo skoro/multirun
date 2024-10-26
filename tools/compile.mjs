@@ -12,6 +12,7 @@ const distDir = path.join(rootDir, 'dist');
 
 /**
  * @param {string} command
+ * @param {ExecOptions} options=undefined
  * @returns {void}
  */
 async function execCommand(command, options) {
@@ -22,7 +23,7 @@ async function execCommand(command, options) {
 }
 
 /**
- * @param {string} command
+ * @param {string} message
  * @returns {void}
  */
 function logStep(message) {
