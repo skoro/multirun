@@ -29,35 +29,53 @@ function logStep(message) {
   console.log(`>>> ${message}`);
 }
 
+/**
+ * @param {string} destBin
+ * @returns {void}
+ */
+async function copyNodeBin(destBin) {
+  logStep('Copy node executable');
+  await fs.copyFile(process.execPath, path.join(distDir, destBin));
+}
+
 try {
   console.log(`platform: ${process.platform}`);
   console.log(`dist dir: ${distDir}`);
   console.log('=========================================================\n');
+
+  await execCommand('npm run build', { cwd: rootDir });
   await execCommand('npm run bundle', { cwd: rootDir });
   await execCommand('node --experimental-sea-config ../sea-config.json', { cwd: distDir });
+
+  let binName = `${pkg.name}-${process.platform}-${process.arch}`;
+  let postjectCmd = 'postject';
+
   switch (process.platform) {
     case 'win32':
-      const binName = `${pkg.name}.exe`;
-      logStep('Copy node executable');
-      await fs.copyFile(process.execPath, path.join(distDir, binName));
+      binName += '.exe';
+      postjectCmd = 'postject.cmd';
+      await copyNodeBin(binName);
       logStep('Remove signature');
       await execCommand(`${path.join(rootDir, 'tools', 'signtool.exe')} remove /s ${path.join(distDir, binName)}`);
-      logStep(`Build executable`);
-      await execCommand([
-        path.join(rootDir, 'node_modules', '.bin', 'postject.cmd'),
-        binName,
-        'NODE_SEA_BLOB',
-        'sea-prep.blob',
-        '--sentinel-fuse NODE_SEA_FUSE_fce680ab2cc467b6e072b8b5df1996b2',
-      ].join(' '), { cwd: distDir });
-      logStep('Done !');
-      console.log(`binary: ${path.join(distDir, binName)}`);
       break;
     case 'linux':
+      await copyNodeBin(binName);
       break;
     default:
       throw new Error(`cannot build application for platform: ${process.platform}`);
   }
+
+  logStep(`Build executable`);
+  await execCommand([
+    path.join(rootDir, 'node_modules', '.bin', postjectCmd),
+    binName,
+    'NODE_SEA_BLOB',
+    'sea-prep.blob',
+    '--sentinel-fuse NODE_SEA_FUSE_fce680ab2cc467b6e072b8b5df1996b2',
+  ].join(' '), { cwd: distDir });
+
+  logStep('Done !');
+  console.log(`binary: ${path.join(distDir, binName)}`);
 } catch (e) {
   console.error(e);
 }
