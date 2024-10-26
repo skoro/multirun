@@ -2,6 +2,12 @@
   "name": "multirun",
   "version": "0.1.0",
   "description": "Simple task/process runner",
+  "homepage": "https://github.com/skoro/multirun",
+  "author": {
+    "name": "Oleksii Skorobogatko",
+    "url": "https://github.com/skoro"
+  },
+  "license": "ISC",
   "main": "build/main.js",
   "scripts": {
     "build": "tsc -p tsconfig.json",
@@ -11,8 +17,6 @@
     "compile": "node tools/compile.mjs",
     "test": "jest"
   },
-  "author": "",
-  "license": "ISC",
   "devDependencies": {
     "@commander-js/extra-typings": "^12.1.0",
     "@types/jest": "^29.5.13",
