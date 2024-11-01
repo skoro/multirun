@@ -9,6 +9,8 @@ const exec = promisify(child_process.exec);
 
 const rootDir = path.join(import.meta.dirname, '..');
 const distDir = path.join(rootDir, 'dist');
+const toolsDir = path.join(rootDir, 'tools');
+const resourcesDir = path.join(rootDir, 'resources');
 
 /**
  * @param {string} command
@@ -57,7 +59,21 @@ try {
       postjectCmd = 'postject.cmd';
       await copyNodeBin(binName);
       logStep('Remove signature');
-      await execCommand(`${path.join(rootDir, 'tools', 'signtool.exe')} remove /s ${path.join(distDir, binName)}`);
+      await execCommand([
+        path.join(toolsDir, 'signtool.exe'), 'remove', '/s', path.join(distDir, binName),
+      ].join(' '));
+      logStep('Update .exe details');
+      await execCommand([
+        path.join(toolsDir, 'rcedit-x64.exe'), path.join(distDir, binName),
+        '--set-product-version', pkg.version,
+        '--set-file-version', pkg.version,
+        '--set-icon', path.join(resourcesDir, 'app.ico'),
+        '--set-version-string', 'FileDescription', `"${pkg.description}"`,
+        '--set-version-string', 'ProductName', `"${pkg.name}"`,
+        '--set-version-string', 'CompanyName', `"${pkg.author.name}"`,
+        '--set-version-string', 'LegalCopyright', `"${pkg.license}"`,
+        '--set-version-string', 'OriginalFilename', binName,
+      ].join(' '));
       break;
     case 'linux':
       await copyNodeBin(binName);
