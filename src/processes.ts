@@ -75,7 +75,7 @@ function startProcess(procEntry: ProcessEntry, logger: Logger): ChildProcess {
   proc.on('close', (code: number) => closeOrRestartProcess(procEntry, code, logger));
 
   if (config.output) {
-    setupProcessOutput(config.output, proc);
+    setupProcessOutput(procName, config.output, proc);
     if (!proc.stdout) {
       logger.warn(`"${procName}" stdout is undefined`);
     }
@@ -131,10 +131,17 @@ function closeOrRestartProcess(procEntry: ProcessEntry, code: number, logger: Lo
   }
 }
 
-function setupProcessOutput(file: string, proc: ChildProcess): void {
+function setupProcessOutput(procName: string, file: string, proc: ChildProcess): void {
   if (file === 'console') {
-    proc.stdout?.on('data', (data) => console.log(`${data}`));
-    proc.stderr?.on('data', (data) => console.error(`${data}`));
+    const output = (prefix: string, data: string, callback: (data: string) => any) => {
+      String(data)
+        .split('\n')
+        .forEach(
+          (line) => callback(prefix + ' >>> ' + line.trimEnd())
+        );
+    }
+    proc.stdout?.on('data', (data) => output(procName, data, console.log));
+    proc.stderr?.on('data', (data) => output(procName, data, console.error));
     return;
   }
 
