@@ -47,8 +47,6 @@ function startProcessTimeout(procEntry: ProcessEntry, logger: Logger): void {
 function startProcess(procEntry: ProcessEntry, logger: Logger): ChildProcess {
   const config = procEntry.config;
 
-  logger.debug(config);
-
   if (!isValidCommand(config?.command)) {
     throw new Error('Process command must be a non empty string.');
   }
@@ -57,6 +55,8 @@ function startProcess(procEntry: ProcessEntry, logger: Logger): ChildProcess {
   const args = config.args ?? [];
   const options = getSpawnOptions(config);
   const procName = procEntry.procName;
+
+  logger.debug({ command, args, options });
 
   const proc = spawn(command, args, options);
 
@@ -102,6 +102,10 @@ function getSpawnOptions(config: ProcessConfig): SpawnOptions {
     options.cwd = config.cwd;
   }
 
+  if (isNeededShell(config.command!)) {
+    options.shell = true;
+  }
+
   return options;
 }
 
@@ -141,6 +145,11 @@ function setupProcessOutput(file: string, proc: ChildProcess): void {
   if (proc.stderr) {
     pipeline(proc.stderr!, stream);
   }
+}
+
+function isNeededShell(command: string): boolean {
+  const cmd = command.toLocaleLowerCase();
+  return cmd.endsWith('.bat') || cmd.endsWith('.cmd');
 }
 
 export { spawnProcesses, startProcess, startProcessTimeout };
