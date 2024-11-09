@@ -6,6 +6,10 @@ spawn:
     command: 'task_command'
     # List of string arguments.
     args: ['--queue', 'sendmails']
+    # Environment key-value pairs.
+    env:
+      USERNAME: test
+      DATABASE: test
     # Current working directory of the process (optional).
     cwd: /var/www/html
     # The maximum amount of time the process is allowed to run (optional).

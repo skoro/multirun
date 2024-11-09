@@ -106,6 +106,10 @@ function getSpawnOptions(config: ProcessConfig): SpawnOptions {
     options.shell = true;
   }
 
+  if (config.env) {
+    options.env = config.env;
+  }
+
   return options;
 }
 
