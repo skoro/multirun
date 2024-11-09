@@ -15,7 +15,8 @@
     "start": "node build/src/main.js",
     "bundle": "node esbuild.mjs",
     "compile": "node tools/compile.mjs",
-    "test": "jest"
+    "test": "jest",
+    "tests": "jest"
   },
   "devDependencies": {
     "@commander-js/extra-typings": "^12.1.0",
