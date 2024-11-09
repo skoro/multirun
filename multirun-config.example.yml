@@ -26,6 +26,10 @@ spawn:
     # Redirect command stdout and stderr outputs to console or a file.
     # By default, no output is collected.
     output: console
+    # Sets the user identity of the process
+    uid: 1000
+    # Sets the group identity of the process
+    gid: 1000
 
   # The next command will run only once.
   task 2:

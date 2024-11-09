@@ -1,5 +1,5 @@
 import { ChildProcess, spawn, SpawnOptions } from "node:child_process";
-import { parseTimeout } from "./utils";
+import { parseTimeout, mustBePositiveInteger } from "./utils";
 import type { ProcessConfig, ProcessEntries as ProcessEntriesConfig } from "./config"
 import { Logger } from "winston";
 import fs from "node:fs";
@@ -110,6 +110,14 @@ function getSpawnOptions(config: ProcessConfig): SpawnOptions {
 
   if (config.env) {
     options.env = config.env;
+  }
+
+  if (config.uid) {
+    options.uid = mustBePositiveInteger(config.uid);
+  }
+
+  if (config.gid) {
+    options.gid = mustBePositiveInteger(config.gid);
   }
 
   return options;
