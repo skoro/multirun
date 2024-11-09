@@ -3,6 +3,10 @@ import YAML from 'yaml';
 
 type TimeoutConfig = string | number;
 
+type TEnvironment = {
+  [name: string]: string;
+}
+
 export type ProcessConfig = {
   cwd?: string;
   command?: string;
@@ -12,6 +16,7 @@ export type ProcessConfig = {
   output?: string;
   max_failed_restarts?: number;
   start_delay?: TimeoutConfig;
+  env?: TEnvironment;
 }
 
 export type ProcessEntries = {
