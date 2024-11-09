@@ -173,4 +173,4 @@ function isNeededShell(command: string): boolean {
   return cmd.endsWith('.bat') || cmd.endsWith('.cmd');
 }
 
-export { spawnProcesses, startProcess, startProcessTimeout };
+export { spawnProcesses, startProcess, startProcessTimeout, getSpawnOptions };
