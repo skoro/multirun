@@ -17,6 +17,8 @@ export type ProcessConfig = {
   max_failed_restarts?: number;
   start_delay?: TimeoutConfig;
   env?: TEnvironment;
+  uid?: number;
+  gid?: number;
 }
 
 export type ProcessEntries = {

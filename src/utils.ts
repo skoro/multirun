@@ -38,4 +38,19 @@ function parseTimeout(value: string | number): number {
   throw new Error(`Invalid timeout unit: ${unit}`);
 }
 
-export { parseTimeout }
+function mustBePositiveInteger(value: any): number {
+  const intVal = parseInt(value, 10);
+
+  if (! isNaN(intVal) && intVal === Number(value)) {
+    if (intVal < 0) {
+      throw new Error(`Expects a positive integer value but got ${intVal}`);
+    }
+    return intVal;
+  }
+
+  const valType = typeof value;
+
+  throw new Error(`Expects an integer but got ${valType == 'number' ? value : valType}`);
+}
+
+export { parseTimeout, mustBePositiveInteger }
