@@ -4,6 +4,15 @@ on:
     tags:
       - v[0-9]+\.[0-9]+\.[0-9]+
   workflow_dispatch:
+    inputs:
+      build-target-binary:
+        required: false
+        description: 'Select build target OS'
+        type: choice
+        options:
+          - build-linux
+          - build-windows
+        default: ''
 
 jobs:
   build-linux:
