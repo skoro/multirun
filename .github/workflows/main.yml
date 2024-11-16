@@ -5,18 +5,19 @@ on:
       - v[0-9]+\.[0-9]+\.[0-9]+
   workflow_dispatch:
     inputs:
-      build-target-binary:
+      build-target-os:
         required: false
-        description: 'Select build target OS'
+        description: 'Select target OS to build binary'
         type: choice
         options:
-          - ''
-          - build-linux
-          - build-windows
-        default: ''
+          - All
+          - Ubuntu
+          - Windows
+        default: all
 
 jobs:
   build-linux:
+    if: ${{ github.event_name != 'workflow_dispatch' || github.event.inputs.build-target-os == 'Linux' || github.event.inputs.build-target-os == 'All' }}
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
@@ -30,6 +31,7 @@ jobs:
           name: multirun-linux-x64
           path: dist/multirun-linux-x64
   build-windows:
+    if: ${{ github.event_name != 'workflow_dispatch' || github.event.inputs.build-target-os == 'Windows' || github.event.inputs.build-target-os == 'All' }}
     runs-on: windows-2022
     steps:
       - uses: actions/checkout@v4
