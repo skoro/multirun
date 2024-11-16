@@ -11,7 +11,7 @@ on:
         type: choice
         options:
           - All
-          - Ubuntu
+          - Linux
           - Windows
         default: all
 
